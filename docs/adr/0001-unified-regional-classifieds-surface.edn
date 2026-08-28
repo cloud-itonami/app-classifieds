@@ -1,0 +1,5 @@
+[{:db/id -1
+  :adr/id "ADR-0001"
+  :adr/title "Unify regional classifieds as an app surface without absorbing domain ownership"
+  :adr/status :accepted
+  :adr/body "Build one regional browse-and-post UI over four existing domain repositories. app-classifieds owns the normalized discovery projection and public interaction surface. fleamarket, shigotoba, real-estate, and hc retain authority for their records and domain workflows. The first slice is honest about local-only posting: user-created entries persist in browser localStorage and are not represented as network publication. New UI uses jp-go-digital-design-system, one HTML document, one ClojureScript bundle, and pure .cljc decision/view code."}]

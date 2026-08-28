@@ -1,0 +1,7 @@
+{:main classifieds.browser
+ :output-to "public/app.js"
+ :output-dir "public/js"
+ :asset-path "js"
+ :optimizations :simple
+ :source-map "public/app.js.map"
+ :pretty-print false}
