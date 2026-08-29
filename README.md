@@ -12,12 +12,60 @@
 - 地域、4カテゴリ、全文語による即時絞り込み
 - 4つの既存repoを出所として明示した統一カード
 - 「掲載する」から作った投稿をブラウザの `localStorage` に保存・再表示
+- `Need`（探している）と `Seed`（提供できる）の出所つき正規化
+- `ossekkai` による理由・点数つき候補提案（提案時点では連絡しない）
+- 双方同意後だけ `nakoudo` が紹介スレッドを開く状態機械
+- `kotoba-lang/org-signal` の X3DH + Double Ratchet によるブラウザ内暗号化往復
+- 住所を受け取らない配送 capability token（開示先は配送業者だけ）
+- provider capture・配送完了・紛争なし・名前付き人間承認を要求するエスクロー判断
+- stdio MCP server（検索・取込正規化・マッチ提案）と A2A Agent Card
+- 参加者DID、SHA-256 content addressing、PII非公開を宣言するWeb3 binding
 - JavaScript無効時にもサンプル一覧を読めるSSR-first HTML
 - 1 document / 1 bundle / 1 mount の単一ページ
 - `jp-go-digital-design-system` と `--hig-*` token contract によるUI
 
-`localStorage` 投稿は **この端末だけの掲載デモ**です。ネットワーク公開、本人確認、
-通報、モデレーション、決済、応募、契約はまだ接続していません。
+`localStorage` 投稿と取引フローは **この端末だけの実行可能デモ**です。MCPはstdioで
+実動しますが、HTTP A2A transport、ネットワーク公開、本人確認、通報、モデレーション、
+Signal Messengerアカウントへの配送、PSP送金、配送業者予約、応募・契約は未接続です。
+
+## 信頼フロー
+
+```text
+Need + Seed
+  -> ossekkai match proposal（理由つき・未連絡）
+  -> Need側同意 + Seed側同意
+  -> nakoudo introduction
+  -> Signal X3DH + Double Ratchet thread
+  -> carrier-only shipment capability / escrow proposal
+  -> provider capture + delivery evidence + no dispute + named human approval
+  -> external rail release（このrepoの外、ここでは実行しない）
+```
+
+公開面へ住所、メッセージ平文、秘密鍵、決済credentialを置きません。匿名配送は
+「相手方と掲示板から住所を秘匿する」境界であり、配送業者・税関・法令上必要な主体から
+秘匿するという意味ではありません。
+
+## Agent / Bot / MCP
+
+```bash
+npm run mcp:smoke
+node scripts/mcp-server.mjs
+```
+
+実装済みtool:
+
+- `classifieds.search`
+- `classifieds.intake.normalize`
+- `classifieds.match.propose`
+
+Botは出所・観測時刻を保持したNeed/Seedを取り込み、候補を提案できます。外部への連絡、
+契約、支払い、エスクロー解除、紛争裁定はtoolに含めていません。
+
+生成されるdiscovery artifacts:
+
+- `public/.well-known/agent-card.json`
+- `public/protocol/mcp-tools.json`
+- `public/protocol/web3-binding.json`
 
 ## 境界
 
@@ -37,6 +85,7 @@
 clojure -M:test
 clojure -M:render public/index.html
 clojure -M:build
+npm run mcp:smoke
 ```
 
 生成した `public/index.html` を静的HTTPサーバで開くと動作を確認できます。

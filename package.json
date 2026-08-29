@@ -1,0 +1,10 @@
+{
+  "name": "cloud-itonami-app-classifieds",
+  "private": true,
+  "scripts": {
+    "mcp:smoke": "node scripts/mcp-smoke.mjs"
+  },
+  "dependencies": {
+    "@noble/curves": "1.9.7"
+  }
+}

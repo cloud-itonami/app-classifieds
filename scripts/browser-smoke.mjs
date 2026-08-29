@@ -58,6 +58,7 @@ const observed = await evaluate(`(() => {
   document.getElementById("open-post-dialog").click();
   result.dialogOpen = document.getElementById("post-dialog").open;
   const form = document.getElementById("post-form");
+  form.querySelector('[name="kind"]').value = "need";
   form.querySelector('[name="title"]').value = "ベビーチェア";
   form.querySelector('[name="category"]').value = "sale";
   form.querySelector('[name="region"]').value = "kanto";
@@ -76,5 +77,35 @@ if (JSON.stringify(observed) !== JSON.stringify(expected)) {
   throw new Error(`Browser smoke mismatch: ${JSON.stringify({ expected, observed })}`);
 }
 
-console.log(JSON.stringify({ status: "ok", ...observed }));
+const trust = await evaluate(`(async () => {
+  document.getElementById("consent-need").click();
+  document.getElementById("consent-seed").click();
+  const consent = document.getElementById("consent-status").textContent;
+  document.getElementById("open-private-thread").click();
+  const deadline = Date.now() + 10000;
+  while (!document.getElementById("signal-status").textContent.includes("往復成功")) {
+    if (document.getElementById("signal-status").textContent.includes("失敗")) break;
+    if (Date.now() > deadline) throw new Error("Signal roundtrip timed out");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  const signal = document.getElementById("signal-status").textContent;
+  document.getElementById("prepare-private-shipment").click();
+  const shipment = document.getElementById("privacy-output").textContent;
+  document.getElementById("prepare-escrow").click();
+  const escrow = document.getElementById("privacy-output").textContent;
+  document.getElementById("try-bot-intake").click();
+  const intake = document.getElementById("bot-intake-status").textContent;
+  return { consent, signal, shipment, escrow, intake };
+})()`);
+
+if (trust.consent !== "2 / 2人が同意"
+    || !trust.signal.includes("X3DH + Double Ratchet往復成功")
+    || !trust.shipment.includes("配送業者のみ")
+    || trust.shipment.includes("東京都")
+    || !trust.escrow.includes("名前付き人間承認")
+    || !trust.intake.includes("provenance保持")) {
+  throw new Error(`Trust-flow smoke mismatch: ${JSON.stringify(trust)}`);
+}
+
+console.log(JSON.stringify({ status: "ok", ...observed, trust }));
 socket.close();

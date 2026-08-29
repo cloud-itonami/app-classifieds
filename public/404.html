@@ -2684,6 +2684,15 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 .classifieds-dialog__body { padding: var(--hig-spacing-6); }
 .classifieds-dialog__actions { display: flex; flex-wrap: wrap; gap: var(--hig-spacing-3); justify-content: flex-end; }
 .classifieds-status { min-height: var(--hig-spacing-6); color: var(--hig-color-secondary-label); }
+.trust-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--hig-spacing-4); }
+.trust-flow__step { display: flex; flex-direction: column; gap: var(--hig-spacing-3); }
+.trust-flow__step[data-state=complete] { box-shadow: inset 0 0 0 var(--hig-hairline) var(--hig-color-tint); }
+.trust-flow__actions { display: flex; flex-wrap: wrap; gap: var(--hig-spacing-2); }
+.intent-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--hig-spacing-3); }
+.intent-card { border-left: var(--hig-spacing-1) solid var(--hig-color-tint); }
+.protocol-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--hig-spacing-3); }
+.protocol-list code { overflow-wrap: anywhere; }
+.privacy-output { padding: var(--hig-spacing-3); background: var(--hig-color-secondary-system-grouped-background); border-radius: var(--hig-radius-md); overflow-wrap: anywhere; }
 @media (max-width: 40rem) { .classifieds-header__inner { align-items: stretch; flex-direction: column; } .classifieds-header__inner .dads-button { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .classifieds-dialog { scroll-behavior: auto; } }</style></head>
   <body>
