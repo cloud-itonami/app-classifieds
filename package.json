@@ -1,10 +1,17 @@
 {
   "name": "cloud-itonami-app-classifieds",
   "private": true,
+  "type": "module",
   "scripts": {
-    "mcp:smoke": "node scripts/mcp-smoke.mjs"
+    "mcp:smoke": "node scripts/mcp-smoke.mjs",
+    "test:worker": "node --test test/worker.test.mjs",
+    "deploy:dry": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@noble/curves": "1.9.7"
+  },
+  "devDependencies": {
+    "wrangler": "^4.127.1"
   }
 }

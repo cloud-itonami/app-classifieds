@@ -1,6 +1,6 @@
 (ns classifieds.protocol
-  "Public discovery contracts. They describe locally verified capabilities and
-  explicitly do not claim a deployed A2A transport, carrier or payment rail."
+  "Public discovery contracts for the deployed read/proposal surface. External
+  delivery, carrier booking and money movement remain explicitly excluded."
   (:require [classifieds.trust :as trust]))
 
 (def mcp-tools
@@ -21,19 +21,35 @@
                                :source {:type "string"}}}}
    {:name "classifieds.match.propose"
     :description "Create an explainable ossekkai match proposal; it never contacts parties."
-    :inputSchema {:type "object" :required ["needId" "seedId"]
-                  :properties {:needId {:type "string"} :seedId {:type "string"}}}}])
+    :inputSchema {:type "object" :required ["need" "seed"]
+                  :properties {:need {:type "object"} :seed {:type "object"}}}}])
 
 (def agent-card
   {:name "Cloud Itonami Classifieds Match Agent"
    :description "Consent-bound Need/Seed discovery and explainable introductions."
-   :url "urn:cloud-itonami:app-classifieds:local-mcp"
-   :version "0.2.0"
-   :capabilities {:streaming false :pushNotifications false}
-   :skills [{:id "need-seed-intake" :name "Need/Seed intake" :tags ["classifieds" "intake"]}
-            {:id "ossekkai-match" :name "Ossekkai matching" :tags ["matching" "consent"]}
-            {:id "nakoudo-introduction" :name "Nakoudo introduction" :tags ["introduction" "privacy"]}]
-   :x-transport-status "local-mcp-verified-a2a-http-not-deployed"})
+   :supportedInterfaces
+   [{:url "https://cloud-itonami-app-classifieds-production.04-feasts-minded.workers.dev/a2a"
+     :protocolBinding "JSONRPC" :protocolVersion "1.0"}
+    {:url "https://cloud-itonami-app-classifieds-production.04-feasts-minded.workers.dev"
+     :protocolBinding "HTTP+JSON" :protocolVersion "1.0"}]
+   :provider {:organization "cloud-itonami"
+              :url "https://github.com/cloud-itonami/app-classifieds"}
+   :version "0.3.0"
+   :documentationUrl "https://github.com/cloud-itonami/app-classifieds"
+   :capabilities {:streaming false :pushNotifications false :extendedAgentCard false}
+   :defaultInputModes ["text/plain" "application/json"]
+   :defaultOutputModes ["application/json"]
+   :skills [{:id "need-seed-intake" :name "Need/Seed intake"
+             :description "Normalize consented, provenance-bearing demand and supply records."
+             :tags ["classifieds" "intake"]}
+            {:id "ossekkai-match" :name "Ossekkai matching"
+             :description "Propose explainable matches without contacting either party."
+             :tags ["matching" "consent"]}
+            {:id "nakoudo-introduction" :name "Nakoudo introduction"
+             :description "Describe the bilateral-consent gate for a private introduction."
+             :tags ["introduction" "privacy"]}]
+   :x-effects {:contactsParties false :movesMoney false :booksCarrier false}
+   :x-transport-status "production-http-a2a-and-mcp-deployed"})
 
 (def web3-binding
   {:version 1

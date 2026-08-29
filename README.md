@@ -18,14 +18,15 @@
 - `kotoba-lang/org-signal` の X3DH + Double Ratchet によるブラウザ内暗号化往復
 - 住所を受け取らない配送 capability token（開示先は配送業者だけ）
 - provider capture・配送完了・紛争なし・名前付き人間承認を要求するエスクロー判断
-- stdio MCP server（検索・取込正規化・マッチ提案）と A2A Agent Card
+- stdio / Streamable HTTP MCP（検索・取込正規化・マッチ提案）と A2A v1 Agent Card / endpoint
 - 参加者DID、SHA-256 content addressing、PII非公開を宣言するWeb3 binding
 - JavaScript無効時にもサンプル一覧を読めるSSR-first HTML
 - 1 document / 1 bundle / 1 mount の単一ページ
 - `jp-go-digital-design-system` と `--hig-*` token contract によるUI
 
-`localStorage` 投稿と取引フローは **この端末だけの実行可能デモ**です。MCPはstdioで
-実動しますが、HTTP A2A transport、ネットワーク公開、本人確認、通報、モデレーション、
+`localStorage` 投稿と取引フローは **この端末だけの実行可能デモ**です。MCP と A2A の
+read/proposal surface は Cloudflare Workers へ公開済みで、既存 fulfillment / settlement
+actor の `/health` を Service Binding 経由で確認します。本人確認、通報、モデレーション、
 Signal Messengerアカウントへの配送、PSP送金、配送業者予約、応募・契約は未接続です。
 
 ## 信頼フロー
@@ -60,6 +61,20 @@ node scripts/mcp-server.mjs
 
 Botは出所・観測時刻を保持したNeed/Seedを取り込み、候補を提案できます。外部への連絡、
 契約、支払い、エスクロー解除、紛争裁定はtoolに含めていません。
+
+公開 endpoint:
+
+- `https://cloud-itonami-app-classifieds-production.04-feasts-minded.workers.dev/`
+- `POST /mcp` — JSON-RPC MCP
+- `POST /a2a` — A2A v1 JSON-RPC `SendMessage`
+- `POST /message:send` — A2A v1 HTTP+JSON
+- `GET /.well-known/agent-card.json` — A2A Agent Card
+- `GET /api/connectors/status` — actor と外部効果の現在地
+- `POST /api/shipment/capability` — 住所を受け取らない配送 capability
+- `POST /api/escrow/plan` — 資金を動かさないエスクロー解除計画
+
+`/api/escrow/release`、`/api/payment/capture`、`/api/payment/transfer` は常に 403、
+`/api/signal/send` はアカウント-backed bridge 未設定の間 503 で fail closed します。
 
 生成されるdiscovery artifacts:
 
