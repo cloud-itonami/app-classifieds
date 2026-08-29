@@ -1,0 +1,5 @@
+[{:db/id -1
+  :adr/id "ADR-0002"
+  :adr/title "Connect Need and Seed through governed ossekkai and nakoudo roles"
+  :adr/status :accepted
+  :adr/body "Extend the regional classifieds surface with one consent-bound transaction path. Public and connector records normalize to Need or Seed with provenance. Ossekkai may compute and explain a match but may not contact either party. Nakoudo may open an introduction only after both participant DIDs consent. The browser proves an actual X3DH plus Double Ratchet encrypted roundtrip using the pinned org-signal implementation. Shipping accepts only a carrier-issued opaque capability and never accepts a postal address into the public contract. Escrow release is held until provider capture, delivery evidence, absence of dispute and a named human authoriser are present; this repository only produces a release proposal and never moves money. MCP exposes search, intake normalization and match proposal only. A2A HTTP, Signal Messenger delivery, carrier booking, PSP execution and chain writes remain external effects and are not claimed by local proof."}]

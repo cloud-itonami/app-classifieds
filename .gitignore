@@ -1,3 +1,5 @@
 .cpcache/
 .shadow-cljs/
-public/js/
+node_modules/
+public/js/*
+!public/js/app.js

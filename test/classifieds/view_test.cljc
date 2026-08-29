@@ -10,8 +10,11 @@
     (is (str/includes? html "width=device-width"))
     (is (str/includes? html "売買・求人・住居・サービス"))
     (is (= 1 (count (re-seq #"<script" html))))
-    (is (str/includes? html "src=\"app.js\""))
+    (is (str/includes? html "src=\"js/app.js\""))
     (is (str/includes? html "aria-live=\"polite\""))
+    (is (str/includes? html "AIおせっかいから、信頼できる取引へ"))
+    (is (str/includes? html "X3DH"))
+    (is (str/includes? html "classifieds.intake.normalize"))
     (is (str/includes? html "サンプル掲載は接続契約の確認用"))))
 
 (deftest every-source-and-listing-is-rendered

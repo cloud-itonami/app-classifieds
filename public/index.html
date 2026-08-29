@@ -2684,8 +2684,17 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 .classifieds-dialog__body { padding: var(--hig-spacing-6); }
 .classifieds-dialog__actions { display: flex; flex-wrap: wrap; gap: var(--hig-spacing-3); justify-content: flex-end; }
 .classifieds-status { min-height: var(--hig-spacing-6); color: var(--hig-color-secondary-label); }
+.trust-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--hig-spacing-4); }
+.trust-flow__step { display: flex; flex-direction: column; gap: var(--hig-spacing-3); }
+.trust-flow__step[data-state=complete] { box-shadow: inset 0 0 0 var(--hig-hairline) var(--hig-color-tint); }
+.trust-flow__actions { display: flex; flex-wrap: wrap; gap: var(--hig-spacing-2); }
+.intent-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--hig-spacing-3); }
+.intent-card { border-left: var(--hig-spacing-1) solid var(--hig-color-tint); }
+.protocol-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--hig-spacing-3); }
+.protocol-list code { overflow-wrap: anywhere; }
+.privacy-output { padding: var(--hig-spacing-3); background: var(--hig-color-secondary-system-grouped-background); border-radius: var(--hig-radius-md); overflow-wrap: anywhere; }
 @media (max-width: 40rem) { .classifieds-header__inner { align-items: stretch; flex-direction: column; } .classifieds-header__inner .dads-button { width: 100%; } }
-@media (prefers-reduced-motion: reduce) { .classifieds-dialog { scroll-behavior: auto; } }</style><script defer src="app.js"></script></head>
+@media (prefers-reduced-motion: reduce) { .classifieds-dialog { scroll-behavior: auto; } }</style><script defer src="js/app.js"></script></head>
   <body>
     <div>
       <header class="classifieds-header">
@@ -2728,6 +2737,92 @@ body { padding-bottom: env(safe-area-inset-bottom); }
           </div>
         </div>
         <div class="dds-ext-container">
+          <section class="dds-ext-section" id="trust-flow">
+            <h2 class="dads-heading" data-size="32">AIおせっかいから、信頼できる取引へ</h2>
+            <p class="classifieds-lede">NeedとSeedを理由付きで照合し、双方同意の後だけ仲人が暗号化スレッドを開きます。住所と決済情報は公開面へ出しません。</p>
+            <div class="intent-pair">
+              <article class="dds-ext-card intent-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">Need / 需要</span>
+                <h3 class="dads-heading" data-size="24">通学用の自転車を探しています</h3>
+                <p class="classifieds-meta">京都市 · 出所: person/local</p>
+              </article>
+              <article class="dds-ext-card intent-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">Seed / シーズ</span>
+                <h3 class="dads-heading" data-size="24">整備済みクロスバイクを譲れます</h3>
+                <p class="classifieds-meta">大阪市 · 出所: cloud-itonami/fleamarket</p>
+              </article>
+            </div>
+            <div class="dads-notification-banner" data-style="standard" data-type="info-1"><h2 class="dads-notification-banner__heading">
+              <svg class="dads-notification-banner__icon" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="インフォメーション">
+                <circle cx="12" cy="12" r="10" fill="currentcolor"></circle>
+                <circle cx="12" cy="8" r="1" fill="Canvas"></circle>
+                <path d="M11 11h2v6h-2z" fill="Canvas"></path>
+              </svg>
+              <span class="dads-notification-banner__heading-text">おせっかい候補 · 適合度 90点</span>
+            </h2><div class="dads-notification-banner__body"><p>カテゴリ・地域・受け渡し条件が一致。これは連絡ではなく、説明可能な提案です。</p></div></div>
+            <div class="trust-flow">
+              <article id="consent-step" class="dds-ext-card trust-flow__step" data-state="waiting">
+                <span class="dads-chip-label" data-style="text" data-color="blue">1 · 双方同意</span>
+                <h3 class="dads-heading" data-size="24">紹介を許可する</h3>
+                <p>Need側とSeed側が個別に同意するまで、相手の連絡先は開示されません。</p>
+                <div class="trust-flow__actions">
+                  <button id="consent-need" class="dads-button" data-type="outline" data-size="sm" type="button">Need側が同意</button>
+                  <button id="consent-seed" class="dads-button" data-type="outline" data-size="sm" type="button">Seed側が同意</button>
+                </div>
+                <p id="consent-status" class="classifieds-status" role="status" aria-live="polite">0 / 2人が同意</p>
+              </article>
+              <article id="message-step" class="dds-ext-card trust-flow__step" data-state="locked">
+                <span class="dads-chip-label" data-style="text" data-color="blue">2 · 仲人とSignal</span>
+                <h3 class="dads-heading" data-size="24">秘匿スレッドを開く</h3>
+                <p>既存org-signalのX3DHで鍵合意し、Double Ratchetで一通を暗号化・復号して確認します。</p>
+                <button id="open-private-thread" disabled class="dads-button" data-type="outline" data-size="sm" type="button">暗号化スレッドを検証</button>
+                <p id="signal-status" class="classifieds-status" role="status" aria-live="polite">双方同意を待っています</p>
+              </article>
+              <article id="transaction-step" class="dds-ext-card trust-flow__step" data-state="locked">
+                <span class="dads-chip-label" data-style="text" data-color="blue">3 · 取引保全</span>
+                <h3 class="dads-heading" data-size="24">配送とエスクローを準備</h3>
+                <p>配送業者だけが解決できる一時tokenを作り、送金ではなく解除条件付きの決済提案を作ります。</p>
+                <div class="trust-flow__actions">
+                  <button id="prepare-private-shipment" disabled class="dads-button" data-type="outline" data-size="sm" type="button">匿名配送token</button>
+                  <button id="prepare-escrow" disabled class="dads-button" data-type="outline" data-size="sm" type="button">エスクロー提案</button>
+                </div>
+                <p id="transaction-status" class="classifieds-status" role="status" aria-live="polite">暗号化スレッドを待っています</p>
+                <output id="privacy-output" class="privacy-output" hidden></output>
+              </article>
+            </div>
+            <p class="classifieds-meta">エスクロー解除には provider capture、配送完了、紛争なし、名前付き人間承認が必要です。この画面は送金も配送予約も行いません。</p>
+          </section>
+          <section class="dds-ext-section" id="agent-surface">
+            <h2 class="dads-heading" data-size="32">Agent・Bot・MCP・Web3 取り込み面</h2>
+            <p class="classifieds-lede">世界中の公開Need/Seedを、出所と観測時刻つきで正規化します。Botは候補を提案できますが、勝手な連絡・契約・支払・裁定はできません。</p>
+            <div class="protocol-list">
+              <article class="dds-ext-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">MCP</span>
+                <h3 class="dads-heading" data-size="24">3つのローカルtool</h3>
+                <p><code>classifieds.search</code> / <code>classifieds.intake.normalize</code> / <code>classifieds.match.propose</code></p>
+                <button id="try-bot-intake" class="dads-button" data-type="outline" data-size="sm" type="button">Bot取り込みを試す</button>
+                <p id="bot-intake-status" class="classifieds-status" role="status" aria-live="polite"></p>
+              </article>
+              <article class="dds-ext-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">A2A</span>
+                <h3 class="dads-heading" data-size="24">発見カード</h3>
+                <p>Agent Cardを生成済み。HTTP A2A transportは未配備と明記しています。</p>
+                <a href=".well-known/agent-card.json">agent-card.json</a>
+              </article>
+              <article class="dds-ext-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">Web3</span>
+                <h3 class="dads-heading" data-size="24">DIDとcontent digest</h3>
+                <p>参加者DIDを識別子に使い、公開提案だけをSHA-256で内容参照します。PIIと平文はchainへ置きません。</p>
+                <a href="protocol/web3-binding.json">web3-binding.json</a>
+              </article>
+              <article class="dds-ext-card">
+                <span class="dads-chip-label" data-style="text" data-color="blue">Governed</span>
+                <h3 class="dads-heading" data-size="24">ossekkai / nakoudo</h3>
+                <p>ossekkaiは候補提案まで、nakoudoは双方同意後の紹介まで。資金解除と紛争裁定は人に残します。</p>
+              </article>
+            </div>
+            <p class="classifieds-meta">MCP tool catalog: 3 · Signal transport: X3DH + Double Ratchet · rails: Stripe Connect / bank transfer / x402 USDC</p>
+          </section>
           <section class="dds-ext-section" id="listings">
             <h2 class="dads-heading" data-size="32">新着の掲載</h2>
             <div class="classifieds-category-nav" aria-label="カテゴリで絞り込む"><button data-category-filter="all" aria-pressed="true" class="dads-button" data-type="outline" data-size="sm" type="button">すべて 8</button><button data-category-filter="sale" aria-pressed="false" class="dads-button" data-type="outline" data-size="sm" type="button">売買 2</button><button data-category-filter="jobs" aria-pressed="false" class="dads-button" data-type="outline" data-size="sm" type="button">求人 2</button><button data-category-filter="housing" aria-pressed="false" class="dads-button" data-type="outline" data-size="sm" type="button">住居 2</button><button data-category-filter="services" aria-pressed="false" class="dads-button" data-type="outline" data-size="sm" type="button">サービス 2</button></div>
@@ -2843,6 +2938,17 @@ body { padding-bottom: env(safe-area-inset-bottom); }
           <h2 class="dads-heading" data-size="32" id="post-dialog-title">地域に掲載する</h2>
           <p class="classifieds-lede">この段階では、この端末のブラウザだけに保存される掲載デモです。ネットには公開されません。</p>
           <div class="dds-ext-stack">
+            <div class="dads-form-control-label" data-size="md"><label class="dads-form-control-label__label" for="post-kind">掲載の向き<span class="dads-form-control-label__requirement" data-required="true">必須</span></label><div>
+              <span class="dads-select"><span class="dads-select__control">
+                <select class="dads-select__select" data-size="md" id="post-kind" name="kind" required>
+                  <option value="need">Need — 探している・困っている</option>
+                  <option value="seed">Seed — 提供できる・余っている</option>
+                </select>
+                <svg class="dads-select__chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 17L3 8L4 7L12 15L20 7L21 8L12 17Z" fill="currentcolor"></path>
+                </svg>
+              </span></span>
+            </div></div>
             <div class="dads-form-control-label" data-size="md"><label class="dads-form-control-label__label" for="post-title">タイトル<span class="dads-form-control-label__requirement" data-required="true">必須</span></label><div>
               <span class="dads-input-text"><input id="post-title" name="title" required maxlength="80" class="dads-input-text__input" data-size="md" type="text"></span>
             </div></div>
