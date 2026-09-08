@@ -1,6 +1,6 @@
 (ns classifieds.browser
   "単一ページの絞り込みとローカル掲載。ネットワークI/Oは行わない。"
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [kotoba.signal.ratchet :as ratchet]
             [kotoba.signal.x3dh :as x3dh]))
 
@@ -14,7 +14,7 @@
 
 (defn visible-card? [el]
   (let [{:keys [region category query]} @filters
-        q (str/lower-case (str/trim query))]
+        q (str/lower (str/trim query))]
     (and (or (= region "all") (= region (.getAttribute el "data-region")))
          (or (= category "all") (= category (.getAttribute el "data-category")))
          (or (str/blank? q) (str/includes? (.getAttribute el "data-search") q)))))
@@ -51,7 +51,7 @@
     (.setAttribute article "data-category" (:category listing))
     (.setAttribute article "data-region" (:region listing))
     (.setAttribute article "data-search"
-                   (str/lower-case (str/join " " (map #(get listing %) [:title :description :city :price]))))
+                   (str/lower (str/join " " (map #(get listing %) [:title :description :city :price]))))
     (set! (.-className top) "listing-card__top")
     (.append top (text-el "span" "dads-chip-label"
                           (str (get kind-labels (:kind listing) "掲載") " · "
