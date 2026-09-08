@@ -1,6 +1,6 @@
 (ns classifieds.view-test
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [classifieds.domain :as domain]
             [classifieds.view :as view]))
 

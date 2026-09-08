@@ -2,7 +2,7 @@
   "Need/Seed matching, consent, privacy shipment and escrow decisions. Pure: no
   network, key custody, carrier booking or money movement lives here."
   (:require [clojure.set :as set]
-            [clojure.string :as str]))
+            [kotoba.lang.text :as str]))
 
 (def supported-rails #{:stripe-connect :bank-transfer :x402-usdc})
 
