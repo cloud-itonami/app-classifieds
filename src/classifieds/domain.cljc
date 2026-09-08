@@ -1,6 +1,6 @@
 (ns classifieds.domain
   "地域分類掲示板の純粋な表示契約と検索判断。I/Oを持たない。"
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def categories
   [{:id :sale :label "売買" :source "cloud-itonami/fleamarket"}
@@ -59,12 +59,12 @@
   (->> [(:title listing) (:description listing) (:city listing) (:price listing)]
        (remove nil?)
        (str/join " ")
-       str/lower-case))
+       str/lower))
 
 (defn visible?
   [listing {:keys [region category query]
             :or {region :all category :all query ""}}]
-  (let [q (str/lower-case (str/trim query))]
+  (let [q (str/lower (str/trim query))]
     (and (or (= region :all) (= region (:region listing)))
          (or (= category :all) (= category (:category listing)))
          (or (str/blank? q) (str/includes? (normalized-text listing) q)))))

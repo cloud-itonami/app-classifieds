@@ -1,6 +1,6 @@
 (ns classifieds.view
   "jp-go-ddsで描く、地域分類掲示板のSSR-first単一ページ。"
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [classifieds.domain :as domain]
             [classifieds.protocol :as protocol]
             [classifieds.trust :as trust]
