@@ -5,7 +5,22 @@
         ;; this repo silently rides whatever a sibling happens to name.
         io.github.kotoba-lang/text {:git/sha "73bdb13ae7a3d004b44bca08be03a3191157a38f"}
        org.clojure/clojure {:mvn/version "1.12.0"}
-        org.clojure/data.json {:mvn/version "2.5.1"}
+        ;; kotoba-lang/json, not org.clojure/data.json. The require is no longer
+        ;; behind #?(:clj ...): json.data-json is .cljc, so render.cljc's JSON
+        ;; is portable rather than JVM-only.
+        ;;
+        ;; The three .well-known documents this writes change byte order:
+        ;; json.core/encode sorts map keys. That is a gain here, not a risk.
+        ;; `protocol/agent-card` has 12 keys, so it is a PersistentHashMap and
+        ;; data.json was already emitting it in HASH order -- an order nobody
+        ;; chose and nothing can rely on. Sorting replaces an arbitrary order
+        ;; with a specified one, which is what a published, content-addressed
+        ;; document wants. Verified nothing compares these bytes: the .cljc
+        ;; tests assert on the data structure and worker.test.mjs asserts on
+        ;; parsed fields. `:escape-slash false` at the call sites is a no-op
+        ;; under both -- json.core never escapes "/".
+        io.github.kotoba-lang/json
+        {:git/sha "4e33e06b4d66b365d27a51393a16a0acd660f9be"}
         io.github.kotoba-lang/jp-go-digital-design-system
         {:git/url "https://github.com/kotoba-lang/jp-go-digital-design-system"
          :git/sha "dc4602dc17bce8f6e9ba038e92b3e95fcc411b49"}

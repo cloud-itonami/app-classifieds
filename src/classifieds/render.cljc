@@ -3,7 +3,7 @@
   (:require [classifieds.domain :as domain]
             [classifieds.protocol :as protocol]
             [classifieds.view :as view]
-            #?(:clj [clojure.data.json :as json])
+            [json.data-json :as json]
             #?(:clj [clojure.java.io :as io])))
 
 #?(:clj
