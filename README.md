@@ -97,9 +97,9 @@ Botは出所・観測時刻を保持したNeed/Seedを取り込み、候補を�
 ## 検証
 
 ```bash
-clojure -M:test
-clojure -M:render public/index.html
-clojure -M:build
+kbb -M:test
+kbb -M:render public/index.html
+kbb -M:build
 npm run mcp:smoke
 ```
 
