@@ -22,11 +22,13 @@
         io.github.kotoba-lang/json
         {:git/sha "4e33e06b4d66b365d27a51393a16a0acd660f9be"}
         io.github.kotoba-lang/jp-go-digital-design-system
-        {:git/url "https://github.com/kotoba-lang/jp-go-digital-design-system"
-         :git/sha "dc4602dc17bce8f6e9ba038e92b3e95fcc411b49"}
+        {:git/url "https://github.com/kotoba-lang/kotoba.git"
+         :git/sha "3dfb77e29a541416bfd6a39aee202ab770ddf952"
+         :deps/root "lib/kotoba.jpGoDigitalDesignSystem"}
         io.github.kotoba-lang/org-signal
-        {:git/url "https://github.com/kotoba-lang/org-signal"
-         :git/sha "511e4b47de5d17945aa02815725703e8eb52bdef"}}
+        {:git/url "https://github.com/kotoba-lang/kotoba.git"
+         :git/sha "3dfb77e29a541416bfd6a39aee202ab770ddf952"
+         :deps/root "lib/org.signal.protocol"}}
  :aliases
  {:build {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.20"}}
           :main-opts ["-m" "shadow.cljs.devtools.cli" "release" "app"]}
